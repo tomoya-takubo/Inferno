@@ -10,6 +10,9 @@ public class FireStoneGenerator : MonoBehaviour
     // 上向きに加える力
     public float addForce;
 
+    // 角速度
+    public float angularVelocity;
+
     // 生成する時間間隔
     public float generateInterval;
 
@@ -28,6 +31,9 @@ public class FireStoneGenerator : MonoBehaviour
 
             // 速度を与える
             fireStone.GetComponent<Rigidbody2D>().AddForce(fireStone.transform.up * addForce);
+
+            // 角速度を与える
+            fireStone.GetComponent<Rigidbody2D>().angularVelocity = Random.Range(-angularVelocity, angularVelocity);
 
             // ***秒待つ
             yield return new WaitForSeconds(generateInterval);
