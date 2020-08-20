@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - DestroyZone
+  - Karaage
   layers:
   - Default
   - TransparentFX

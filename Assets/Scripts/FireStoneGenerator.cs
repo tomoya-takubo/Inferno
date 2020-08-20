@@ -16,6 +16,11 @@ public class FireStoneGenerator : MonoBehaviour
     // 生成する時間間隔
     public float generateInterval;
 
+    // からあげ大きさ
+    public float scaleKaraageMax;   // 最大値
+    public float scaleKaraageMin;   // 最小値
+
+
     IEnumerator Start()
     {
         // 火山岩生成
@@ -30,10 +35,18 @@ public class FireStoneGenerator : MonoBehaviour
                                                             , Random.Range(-5f, -25f));
 
             // 速度を与える
-            fireStone.GetComponent<Rigidbody2D>().AddForce(fireStone.transform.up * addForce);
+            Rigidbody2D rb = fireStone.GetComponent<Rigidbody2D>(); // RigidBody2D取得
+            rb.AddForce(fireStone.transform.up * addForce);
 
             // 角速度を与える
-            fireStone.GetComponent<Rigidbody2D>().angularVelocity = Random.Range(-angularVelocity, angularVelocity);
+            rb.angularVelocity = Random.Range(-angularVelocity, angularVelocity);
+
+            // スケールを与える
+            float random = Random.Range(scaleKaraageMin, scaleKaraageMax);
+            fireStone.transform.localScale = new Vector2(random, random);
+
+            // グラム数計算
+            fireStone.grammScore = random * 100.0f;
 
             // ***秒待つ
             yield return new WaitForSeconds(generateInterval);
