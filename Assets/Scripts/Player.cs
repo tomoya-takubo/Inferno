@@ -10,6 +10,9 @@ public class Player : MonoBehaviour
     // UIManager
     public UIManager uiManager;
 
+    // 獲得したからあげリスト
+    public List<FireStone> getKaraageList = new List<FireStone>();
+
     void Update()
     {
         // 横移動
@@ -19,14 +22,22 @@ public class Player : MonoBehaviour
     private void Move()
     {
         this.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(Input.GetAxis("Horizontal") * maxPlayerVelocity, 0);
+
+        float x = Mathf.Clamp(transform.position.x, -8.0f, 8.0f);
+        transform.position = new Vector2(x, transform.position.y);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.tag == "Karaage")
         {
+            FireStone fireSt = collision.GetComponent<FireStone>();
+            
             // スコア加算
-            uiManager.UpdateScore(collision.GetComponent<FireStone>().grammScore);
+            uiManager.UpdateScore(fireSt.grammScore);
+
+            getKaraageList.Add(fireSt);
         }
+
     }
 }
