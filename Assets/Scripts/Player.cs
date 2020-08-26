@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    // 移動速度最大値
-    public float maxPlayerVelocity;
+    public float maxPlayerVelocity;     // プレイヤーの動く速度（最大値）
 
-    // UIManager
-    public UIManager uiManager;
+    public UIManager uiManager;         // UIマネージャー
+    public List<KaraageBehaviour> getKaraageList = new List<KaraageBehaviour>();    // ゲットしたからあげ格納用リスト
 
-    // 獲得したからあげリスト
-    public List<FireStone> getKaraageList = new List<FireStone>();
+    public AudioClip karaageGet;    // からあげゲット音
 
     void Update()
     {
-        // 横移動
+        // 移動
         Move();
     }
 
@@ -31,11 +29,10 @@ public class Player : MonoBehaviour
     {
         if(collision.tag == "Karaage")
         {
-            FireStone fireSt = collision.GetComponent<FireStone>();
-            
-            // スコア加算
-            uiManager.UpdateScore(fireSt.grammScore);
+            this.GetComponent<AudioSource>().PlayOneShot(karaageGet);
 
+            KaraageBehaviour fireSt = collision.GetComponent<KaraageBehaviour>();
+            uiManager.UpdateScore(fireSt.karaageWeight);
             getKaraageList.Add(fireSt);
         }
 
