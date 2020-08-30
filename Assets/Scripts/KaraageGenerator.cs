@@ -8,15 +8,20 @@ public class KaraageGenerator : MonoBehaviour
 
     public float addForce;                      // 打ち上げ力
     public float angularVelocity;               // 回転力
-    // public float generateInterval;              // 打ち上げ間隔
-    public int generateProbablly;             // 生成確率
+    // public float generateInterval;           // 打ち上げ間隔
+    public int generateProbability;             // 生成確率分母
+    public int minGenerateProbability;          // 最大生成確率分母
+    public float probabilityUpdateTimeInterval;   // 確率分母更新間隔
+    public int probabilityUpdateAtOnce;         // 一回当たりの確率分母更新大きさ
     public float scaleKaraageMax;               // からあげの大きさ（最大値）
     public float scaleKaraageMin;               // からあげの大きさ（最小値）
     public bool isLeft;                         // 打ち上げ場所（左側:0, 右側:1）
 
     public KaraageBehaviour karaagePrefab;      // からあげプレハブ格納用変数
 
-    public Sprite[] allKaraageTypes;         // Resourcesフォルダから取得したからあげ絵を格納するための配列
+    public Sprite[] allKaraageTypes;            // Resourcesフォルダから取得したからあげ絵を格納するための配列
+
+    private float timeCounter = 0.0f;
 
 
     void Start()
@@ -28,16 +33,15 @@ public class KaraageGenerator : MonoBehaviour
 
     void Update()
     {
-        if (gManager.gameOver) return;
+        GenerateKaraage();
+        UpdateProbability();
+    }
 
-        if (Random.Range(0, generateProbablly + 1) != 0)
-        {
-            if (isLeft) Debug.Log("はずれ");
+    private void GenerateKaraage()
+    {
+        if (GManager.instance.gameStates != GManager.GAMESTATES.PLAYING) return;
 
-            return;
-        }
-
-        if (isLeft) Debug.Log("あたり");
+        if (Random.Range(0, generateProbability + 1) != 0) return;
 
         // からあげプレハブ作成
         KaraageBehaviour karaage = Instantiate(karaagePrefab, this.transform);
@@ -64,5 +68,16 @@ public class KaraageGenerator : MonoBehaviour
 
         // 重さ計算
         karaage.karaageWeight = randNum * 100.0f * 0.3f;
+    }
+
+    private void UpdateProbability()
+    {
+        timeCounter += Time.deltaTime;
+
+        if(timeCounter > probabilityUpdateTimeInterval && generateProbability > minGenerateProbability)
+        {
+            generateProbability -= probabilityUpdateAtOnce;
+            timeCounter = 0;
+        }
     }
 }

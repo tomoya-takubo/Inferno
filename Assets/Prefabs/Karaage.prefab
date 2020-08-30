@@ -340,3 +340,4 @@ MonoBehaviour:
   karaageType: {fileID: -7820716480979924086}
   falling: {fileID: 8300000, guid: d53da3ff27fa68346bdba918b7438d49, type: 3}
   isFalling: 0
+  explosion: {fileID: 8300000, guid: 65dc33c3d2f86bc4bb6ebd5a01f7348b, type: 3}

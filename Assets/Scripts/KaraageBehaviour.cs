@@ -5,13 +5,12 @@ using UnityEngine;
 public class KaraageBehaviour : MonoBehaviour
 {
     public TextMesh weight;                 // グラム数表示
-
     public float karaageWeight;             // からあげの重さ（グラム）
     public SpriteRenderer karaageType;      // からあげの種類
-
     public AudioClip falling;               // 落下音
-
     public bool isFalling = false;          // 落下しているか
+
+    public AudioClip explosion;             // 爆発音
 
     void Start()
     {
@@ -33,19 +32,19 @@ public class KaraageBehaviour : MonoBehaviour
     }
 
     /// <summary>
-    /// 接触時処理
+    /// 侵入時処理
     /// </summary>
     /// <param name="col"></param>
     private void OnTriggerEnter2D(Collider2D col)
     {
-        if (col.tag == "Player")
+        if (col.tag == "GetKaraageAria")
         {
             this.gameObject.SetActive(false);
         }
 
-
         if (col.tag == "DestroyZone")
         {
+            this.GetComponent<AudioSource>().PlayOneShot(explosion);
             Destroy(this.gameObject);
         }
     }
